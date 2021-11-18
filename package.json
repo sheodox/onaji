@@ -1,6 +1,6 @@
 {
   "name": "onaji",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Stringify and parse with support for more data types.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -11,7 +11,7 @@
     "test": "node dist/test.js",
     "lint": "tsc --noEmit && eslint ./src/**.ts",
     "prepare": "husky install",
-	"prepublishOnly": "npm run build && npm test && npm run lint"
+    "prepublishOnly": "npm run build && npm test && npm run lint"
   },
   "author": "sheodox",
   "license": "ISC",
