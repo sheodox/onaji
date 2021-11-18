@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"moduleResolution": "node",
+		"module": "es2020",
+		"esModuleInterop": true,
+		"target": "es2020",
+		"noImplicitAny": true,
+		"removeComments": false,
+		"preserveConstEnums": true,
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"declaration": true,
+		"outDir": "dist"
+	},
+	"include": ["src/**/*"]
+}

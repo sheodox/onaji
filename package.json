@@ -1,0 +1,33 @@
+{
+  "name": "onaji",
+  "version": "0.0.1",
+  "description": "Stringify and parse with support for more data types.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "test": "node dist/test.js",
+    "lint": "tsc --noEmit && eslint ./src/**.ts",
+    "prepare": "husky install",
+	"prepublishOnly": "npm run build && npm test && npm lint"
+  },
+  "author": "sheodox",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^16.11.7",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.2.0",
+    "prettier": "2.4.1",
+    "typescript": "^4.5.2",
+    "husky": "^7.0.0"
+  },
+  "keywords": [
+    "parse",
+    "stringify",
+    "json"
+  ]
+}
