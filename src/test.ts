@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { serialize, deserialize } from './index.js';
+import { serialize, deserialize, isOnajiSerialized } from './index.js';
 
 interface TestObject {
 	testString: string;
@@ -33,6 +33,8 @@ assert.equal(
 	testDateTime,
 	'deserialized nested dates should have the same time'
 );
+assert.equal(isOnajiSerialized(serializedTestObj), true, 'serialized strings should be identifiable');
+assert.equal(isOnajiSerialized('test'), false, 'non-serialized strings should be identifiable');
 
 interface TestItem {
 	name: string;

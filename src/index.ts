@@ -1,28 +1,38 @@
-const typeKey = '__onaji_type';
+const typeKey = '__onaji_type',
+	// a string prepended to serialized strings to identify them
+	// as having been serialized by onaji
+	onajiSerializationIdentifier = '__ONAJI__';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function serialize(obj: any) {
-	return JSON.stringify(obj, function (key, value) {
-		// skip already serialized objects, this gets called even
-		// when serializing an object once
-		if (key === typeKey) {
+	return (
+		onajiSerializationIdentifier +
+		JSON.stringify(obj, function (key, value) {
+			// skip already serialized objects, this gets called even
+			// when serializing an object once
+			if (key === typeKey) {
+				return value;
+			}
+
+			const originalValue = this[key];
+
+			if (originalValue instanceof Date) {
+				return {
+					[typeKey]: 'date',
+					serialized: originalValue.getTime(),
+				};
+			}
 			return value;
-		}
+		})
+	);
+}
 
-		const originalValue = this[key];
-
-		if (originalValue instanceof Date) {
-			return {
-				[typeKey]: 'date',
-				serialized: originalValue.getTime(),
-			};
-		}
-		return value;
-	});
+export function isOnajiSerialized(str: string) {
+	return typeof str === 'string' && str.startsWith(onajiSerializationIdentifier);
 }
 
 export function deserialize<T>(str: string) {
-	return JSON.parse(str, (_, value) => {
+	return JSON.parse(str.substring(onajiSerializationIdentifier.length), (_, value) => {
 		if (typeof value === 'object' && value[typeKey]) {
 			const { serialized } = value;
 

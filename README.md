@@ -10,7 +10,7 @@ Additional support is provided for:
 ## Usage
 
 ```typescript
-import { serialize, deserialize } from 'onaji';
+import { serialize, deserialize, isOnajiSerialized } from 'onaji';
 
 const dataStr = serialize({
   name: 'sheodox',
@@ -24,6 +24,8 @@ interface MyData {
 
 console.log(deserialize<MyData>(dataStr).createdAt.getFullYear());
 // 2021
+console.log(isOnajiSerialized(dataStr));
+// true
 ```
 
 ## Name

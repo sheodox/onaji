@@ -1,6 +1,6 @@
 {
   "name": "onaji",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Stringify and parse with support for more data types.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
