@@ -11,7 +11,7 @@
     "test": "node dist/test.js",
     "lint": "tsc --noEmit && eslint ./src/**.ts",
     "prepare": "husky install",
-	"prepublishOnly": "npm run build && npm test && npm lint"
+	"prepublishOnly": "npm run build && npm test && npm run lint"
   },
   "author": "sheodox",
   "license": "ISC",
