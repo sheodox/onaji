@@ -36,6 +36,10 @@ assert.equal(
 assert.equal(isOnajiSerialized(serializedTestObj), true, 'serialized strings should be identifiable');
 assert.equal(isOnajiSerialized('test'), false, 'non-serialized strings should be identifiable');
 
+const nullSerialized = serialize(null);
+assert.equal(nullSerialized, 'null', 'null should serialize without using onaji');
+assert.equal(deserialize(nullSerialized), null, 'null should deserialize without using onaji');
+
 interface TestItem {
 	name: string;
 	date: Date;
