@@ -33,3 +33,30 @@ assert.equal(
 	testDateTime,
 	'deserialized nested dates should have the same time'
 );
+
+interface TestItem {
+	name: string;
+	date: Date;
+}
+const arrayTestObj: TestItem[] = [
+		{
+			name: 'one',
+			date: new Date(testDateTime),
+		},
+		{
+			name: 'two',
+			date: new Date(testDateTime),
+		},
+	],
+	deserializedArrayTestObj = deserialize<TestItem[]>(serialize(arrayTestObj));
+
+assert.equal(
+	deserializedArrayTestObj[0].date.getTime(),
+	testDateTime,
+	'deserialized dates in an object within an array should be a Date'
+);
+assert.equal(
+	deserializedArrayTestObj[0].name,
+	'one',
+	'deserialized strings in objects within an array should be the same'
+);
