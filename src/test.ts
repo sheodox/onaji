@@ -5,6 +5,7 @@ interface TestObject {
 	testString: string;
 	testDate: Date;
 	testNumber: number;
+	testNull: null;
 	nested: {
 		nestedDate: Date;
 	};
@@ -15,6 +16,7 @@ const testDateTime = 1337,
 		testString: 'test',
 		testDate: new Date(testDateTime),
 		testNumber: 5,
+		testNull: null,
 		nested: {
 			nestedDate: new Date(testDateTime),
 		},
@@ -33,6 +35,7 @@ assert.equal(
 	testDateTime,
 	'deserialized nested dates should have the same time'
 );
+assert.equal(deserializedTestObj.testNull, null, 'null properties should be deserialized without error');
 assert.equal(isOnajiSerialized(serializedTestObj), true, 'serialized strings should be identifiable');
 assert.equal(isOnajiSerialized('test'), false, 'non-serialized strings should be identifiable');
 

@@ -5,8 +5,6 @@ const typeKey = '__onaji_type',
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function serialize(obj: any) {
-	// 'null' is typeof 'object' in JS, but it won't deserialize cleanly
-	// allow null to skip onaji serialization/deserialization
 	if (obj === null) {
 		return JSON.stringify(obj);
 	}
@@ -41,7 +39,9 @@ export function deserialize<T>(str: string) {
 		return JSON.parse(str);
 	}
 	return JSON.parse(str.substring(onajiSerializationIdentifier.length), (_, value) => {
-		if (typeof value === 'object' && value[typeKey]) {
+		// 'null' is typeof 'object' in JS, but it won't deserialize cleanly
+		// allow null to skip onaji serialization/deserialization
+		if (value !== null && typeof value === 'object' && value[typeKey]) {
 			const { serialized } = value;
 
 			switch (value[typeKey]) {
