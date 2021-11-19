@@ -55,8 +55,8 @@ const dataStr = serialize({
   if (value instanceof User) {
     // custom serializers can return a [string, any] tuple, where the
     // first item is a type string your custom deserializer will get, and
-	// the second item is some JSON stringify-able representation of your
-	// custom object which your deserializer can use to reconstruct it
+    // the second item is some JSON stringify-able representation of your
+    // custom object which your deserializer can use to reconstruct it
     return ['user', user.name]
   }
 
@@ -67,8 +67,8 @@ const deserializedData = deserialize<MyData>(dataStr, (type, serialized) => {
   // use the type string from your custom serializer to decide which type of object
   // you want to recreate using the serialized data
   if (type === 'user') {
-	// the custom serializer returned just the name for this user
-  	return new User(serialized)
+    // the custom serializer returned just the name for this user
+    return new User(serialized)
   }
 })
 
