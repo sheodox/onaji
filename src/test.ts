@@ -69,3 +69,37 @@ assert.equal(
 	'one',
 	'deserialized strings in objects within an array should be the same'
 );
+
+class User {
+	name: string;
+	id: number;
+
+	constructor(name: string, id: number) {
+		this.name = name;
+		this.id = id;
+	}
+}
+
+interface CustomObjectTest {
+	test: boolean;
+	user: User;
+}
+
+const dataWithUser = {
+		test: true,
+		user: new User('sheodox', 100),
+	},
+	customSerialized = serialize(dataWithUser, (value) => {
+		if (value instanceof User) {
+			return ['user', { name: value.name, id: value.id }];
+		}
+	}),
+	customDeserialized = deserialize<CustomObjectTest>(customSerialized, (type, serialized) => {
+		if (type === 'user') {
+			return new User(serialized.name, serialized.id);
+		}
+	});
+
+assert.equal(customDeserialized.user instanceof User, true, 'deserialized custom class should be that class');
+assert.equal(customDeserialized.user.name, 'sheodox', 'deserialized custom class should use serialzed data');
+assert.equal(customDeserialized.test, true, 'non-custom object is deserialized as-is');
