@@ -7,8 +7,8 @@ type CustomSerializer = (value: any, key: string) => [string, any] | undefined;
 type CustomDeserializer = (type: string, serialized: any) => any;
 
 export function serialize(obj: any, customSerializer?: CustomSerializer) {
-	if (obj === null) {
-		return JSON.stringify(obj);
+	if (!isOnajiSerializable(obj)) {
+		throw new Error(`The object to serialize isn't an object`);
 	}
 	return (
 		onajiSerializationIdentifier +
@@ -47,10 +47,19 @@ export function isOnajiSerialized(str: string) {
 	return typeof str === 'string' && str.startsWith(onajiSerializationIdentifier);
 }
 
+export function isOnajiSerializable(obj: any) {
+	// can't just do the typeof check, `null` is an object, but isn't serializable
+	return !!obj && typeof obj === 'object';
+}
+
 export function deserialize<T>(str: string, customDeserializer?: CustomDeserializer) {
-	if (!isOnajiSerialized(str)) {
-		return JSON.parse(str);
+	if (typeof str !== 'string') {
+		throw new Error(`The string to deserialize wasn't a string, got type "${typeof str}"`);
 	}
+	if (!isOnajiSerialized(str)) {
+		throw new Error("The string to deserialize wasn't serialized by Onaji");
+	}
+
 	return JSON.parse(str.substring(onajiSerializationIdentifier.length), (_, value) => {
 		// 'null' is typeof 'object' in JS, but it won't deserialize cleanly
 		// allow null to skip onaji serialization/deserialization

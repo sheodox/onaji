@@ -76,6 +76,32 @@ console.log(deserialize<MyData>(dataStr).user instanceof User);
 // true
 ```
 
+## Additional Methods
+
+`isOnajiSerializable(value: any)` - Check if `value` could be serialized.
+
+```typescript
+import { isOnajiSerializable } from 'onaji';
+
+console.log(isOnajiSerializable(null));
+// false
+console.log(isOnajiSerializable({hello: 'world'}));
+// true
+```
+
+`isOnajiSerialized(value: any)` - Check if `value` has been serialized by Onaji.
+
+```typescript
+import { serialize, isOnajiSerializedi } from 'onaji';
+
+const serializedObject = serialize({hello: 'world'});
+
+console.log(isOnajiSerialized(serializedObject));
+// true
+console.log(isOnajiSerialized('test'));
+// false
+```
+
 ## Name
 
 Onaji (同じ) is the Japanese word for "same, identical, equal".

@@ -39,10 +39,6 @@ assert.equal(deserializedTestObj.testNull, null, 'null properties should be dese
 assert.equal(isOnajiSerialized(serializedTestObj), true, 'serialized strings should be identifiable');
 assert.equal(isOnajiSerialized('test'), false, 'non-serialized strings should be identifiable');
 
-const nullSerialized = serialize(null);
-assert.equal(nullSerialized, 'null', 'null should serialize without using onaji');
-assert.equal(deserialize(nullSerialized), null, 'null should deserialize without using onaji');
-
 interface TestItem {
 	name: string;
 	date: Date;
@@ -82,12 +78,20 @@ class User {
 
 interface CustomObjectTest {
 	test: boolean;
-	user: User;
+	nested: [
+		{
+			user: User;
+		}
+	];
 }
 
 const dataWithUser = {
 		test: true,
-		user: new User('sheodox', 100),
+		nested: [
+			{
+				user: new User('sheodox', 100),
+			},
+		],
 	},
 	customSerialized = serialize(dataWithUser, (value) => {
 		if (value instanceof User) {
@@ -100,6 +104,29 @@ const dataWithUser = {
 		}
 	});
 
-assert.equal(customDeserialized.user instanceof User, true, 'deserialized custom class should be that class');
-assert.equal(customDeserialized.user.name, 'sheodox', 'deserialized custom class should use serialzed data');
+assert.equal(customDeserialized.nested[0].user instanceof User, true, 'deserialized custom class should be that class');
+assert.equal(customDeserialized.nested[0].user.name, 'sheodox', 'deserialized custom class should use serialzed data');
 assert.equal(customDeserialized.test, true, 'non-custom object is deserialized as-is');
+
+assert.throws(
+	() => serialize('test'),
+	{ message: "The object to serialize isn't an object" },
+	`an error should be thrown when serializing something that's not an object`
+);
+assert.throws(
+	// `null` is typeof object, but not serializable
+	() => serialize(null),
+	{ message: "The object to serialize isn't an object" },
+	`an error should be thrown when serializing something that's not an object`
+);
+assert.throws(
+	() => deserialize({} as string),
+	{ message: `The string to deserialize wasn't a string, got type "object"` },
+	`an error should be thrown when an object was already parsed`
+);
+
+assert.throws(
+	() => deserialize('test'),
+	{ message: "The string to deserialize wasn't serialized by Onaji" },
+	`an error should be thrown when trying to deserialize something that wasn't serialized by onaji n the first place`
+);
