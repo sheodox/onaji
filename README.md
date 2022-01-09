@@ -3,7 +3,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/onaji"><img alt="npm version" src="https://img.shields.io/npm/v/onaji"></a>
   <a href="https://www.npmjs.com/package/onaji"><img alt="npm downloads" src="https://img.shields.io/npm/dw/onaji"></a>
-  <img alt="Test status" src="https://github.com/sheodox/onaji/actions/workflows/node.js.yaml/badge.svg">
+  <img alt="Test status" src="https://github.com/sheodox/onaji/actions/workflows/Onaji%20CI.yaml/badge.svg">
 </p>
 
 This is a library to replace `JSON.stringify(obj)` and `JSON.parse(str)` with support for more data types. It's helpful when using Typescript types for data sent over the internet without having to make ugly exceptions to your types, or explicitly parse data that comes out different after being stringified and parsed (like how a `Date` object turns into and remains a `string`).
