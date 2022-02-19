@@ -130,3 +130,18 @@ assert.throws(
 	{ message: "The string to deserialize wasn't serialized by Onaji" },
 	`an error should be thrown when trying to deserialize something that wasn't serialized by onaji n the first place`
 );
+
+// prototype poisoning mitigation
+const infectedObject = JSON.parse(`{"__proto__": {"a": 5}}`);
+assert.equal(serialize(infectedObject).includes('proto'), false, "serialized data shouldn't include proto");
+assert.equal(
+	Object.assign({}, deserialize<any>(serialize(infectedObject))).a,
+	undefined,
+	"infected prototype shouldn't be deserialized"
+);
+
+assert.equal(
+	Object.assign({}, deserialize<any>('__ONAJI__{"__proto__":{"a":5}}')).a,
+	undefined,
+	"infected prototype from infected payload shouldn't be infected once deserialize"
+);

@@ -13,6 +13,9 @@ export function serialize(obj: any, customSerializer?: CustomSerializer) {
 	return (
 		onajiSerializationIdentifier +
 		JSON.stringify(obj, function (key, value) {
+			if (key === '__proto__') {
+				return;
+			}
 			// skip already serialized objects, this gets called even
 			// when serializing an object once
 			if (key === typeKey) {
@@ -60,7 +63,11 @@ export function deserialize<T>(str: string, customDeserializer?: CustomDeseriali
 		throw new Error("The string to deserialize wasn't serialized by Onaji");
 	}
 
-	return JSON.parse(str.substring(onajiSerializationIdentifier.length), (_, value) => {
+	return JSON.parse(str.substring(onajiSerializationIdentifier.length), (key, value) => {
+		if (key === '__proto__') {
+			return;
+		}
+
 		// 'null' is typeof 'object' in JS, but it won't deserialize cleanly
 		// allow null to skip onaji serialization/deserialization
 		if (value !== null && typeof value === 'object' && value[typeKey]) {
